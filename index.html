@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Speaking Part 1 - A1 Course (Lessons 2-16)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .pulse-recording {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navigation Header -->
+    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/10 p-2 rounded-xl backdrop-blur-sm">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-yellow-300"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg sm:text-xl tracking-tight leading-none">A1 IELTS Speaking Practice</h1>
+                    <p class="text-xs text-indigo-200 mt-1">Luyện nói tiếng Anh trình độ Basic A1-A2</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="startRandomTest()" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-950 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-dice"></i>
+                    <span>Tạo Đề Thi Ngẫu Nhiên</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Sidebar: Lesson & Topic selection -->
+        <aside class="lg:col-span-4 space-y-4">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Danh Sách Chủ Đề (Topics)</h2>
+                    <span id="lesson-count-badge" class="text-[10px] bg-slate-100 font-semibold px-2 py-0.5 rounded text-slate-600">15 Topics</span>
+                </div>
+                
+                <!-- Topic & Question Accordion Selector -->
+                <div class="space-y-2 max-h-[65vh] overflow-y-auto pr-1 custom-scrollbar" id="lesson-list">
+                    <!-- Topics and collapsible questions injected dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Helpful tips -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-indigo-900">
+                <h3 class="font-bold text-xs flex items-center gap-2 mb-1.5 text-indigo-800">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Mẹo mở rộng câu trả lời Part 1
+                </h3>
+                <p class="text-xs text-indigo-700 leading-relaxed">
+                    Hãy trả lời **2 - 3 câu ngắn**: 1 câu trực tiếp + 1 câu nêu lý do (*because...*) hoặc thêm thông tin chi tiết (*and...*).
+                </p>
+            </div>
+        </aside>
+
+        <!-- Main Practice Area -->
+        <section class="lg:col-span-8 flex flex-col space-y-4">
+            <!-- Topic Header -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex justify-between items-center">
+                <div>
+                    <span id="current-lesson-badge" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700 mb-1">TOPIC</span>
+                    <h2 id="current-topic-title" class="text-lg font-bold text-slate-800">Personal Information</h2>
+                </div>
+                <div class="text-right">
+                    <span id="question-counter" class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl border border-slate-200">Câu 1 / 6</span>
+                </div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider block mb-1">Câu hỏi IELTS Speaking:</span>
+                        <h3 id="question-text" class="text-xl font-bold text-slate-800 leading-snug">
+                            What is your name?
+                        </h3>
+                        <div class="mt-2 flex items-center gap-2">
+                            <button onclick="toggleTranslation()" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition">
+                                <i class="fa-solid fa-language text-sm"></i> <span id="btn-trans-text">Xem dịch câu hỏi</span>
+                            </button>
+                        </div>
+                        <p id="question-translation" class="hidden text-sm text-indigo-700 bg-indigo-50/60 p-2.5 rounded-xl mt-2 border border-indigo-100 font-medium">
+                            <!-- Translation text -->
+                        </p>
+                    </div>
+                    <button id="btn-play-audio" onclick="playQuestionTTS()" class="flex-shrink-0 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 p-3 rounded-xl transition flex items-center gap-2 font-semibold text-xs">
+                        <i class="fa-solid fa-volume-high text-sm"></i>
+                        <span class="hidden sm:inline">Nghe phát âm</span>
+                    </button>
+                </div>
+
+                <!-- Vocabulary Hints & Answer Structures -->
+                <div class="mt-4 pt-3 border-t border-slate-100">
+                    <button onclick="toggleVocab()" class="text-xs font-semibold text-indigo-600 flex items-center gap-1 hover:underline">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i> Gợi ý cấu trúc trả lời & Từ vựng
+                    </button>
+                    <div id="vocab-box" class="hidden mt-2 bg-slate-50 rounded-xl p-3.5 text-xs text-slate-700 space-y-2 border border-slate-200">
+                        <!-- Filled dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Sample Answer -->
+                <div class="mt-2">
+                    <button onclick="toggleSampleAnswer()" class="text-xs font-semibold text-emerald-600 flex items-center gap-1 hover:underline">
+                        <i class="fa-solid fa-sparkles"></i> Câu trả lời mẫu (Sample Answer)
+                    </button>
+                    <div id="sample-box" class="hidden mt-2 bg-emerald-50/80 rounded-xl p-3.5 text-xs text-emerald-900 border border-emerald-200">
+                        <p id="sample-answer-text" class="font-semibold text-sm">"My name is Nam."</p>
+                        <p id="sample-answer-trans" class="text-emerald-700 mt-1 italic">"Tên tôi là Nam."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answer Input & Speech Recognition -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex-grow flex flex-col justify-between">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Trả lời của bạn (Your Answer):</label>
+                    <textarea id="user-answer" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-sm" placeholder="Nhấp mic để nói hoặc nhập câu trả lời tiếng Anh vào đây..."></textarea>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="mt-4 flex flex-wrap gap-3 items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <button id="btn-record" onclick="toggleRecording()" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-2 text-xs shadow-sm">
+                            <i class="fa-solid fa-microphone"></i>
+                            <span id="record-btn-text">Bắt đầu nói</span>
+                        </button>
+                        <span id="recording-status" class="text-xs text-rose-500 hidden font-medium flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 pulse-recording inline-block"></span> Đang nhận diện...
+                        </span>
+                    </div>
+
+                    <button id="btn-feedback" onclick="getAIFeedback()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-2 text-xs shadow-sm">
+                        <i class="fa-solid fa-robot"></i> Giáo viên AI nhận xét
+                    </button>
+                </div>
+
+                <!-- AI Feedback Display Box -->
+                <div id="ai-feedback-box" class="hidden mt-4 p-4 rounded-xl border bg-indigo-50/70 border-indigo-200 text-slate-800">
+                    <div class="flex items-center gap-2 font-bold text-indigo-800 text-xs mb-2">
+                        <i class="fa-solid fa-comment-dots text-indigo-600"></i> Nhận xét từ Giáo viên AI:
+                    </div>
+                    <div id="ai-feedback-content" class="text-xs leading-relaxed">
+                        <!-- AI analysis content -->
+                    </div>
+                </div>
+
+                <!-- Question Navigation -->
+                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+                    <button id="btn-prev" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition disabled:opacity-40">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Câu trước
+                    </button>
+                    <button id="btn-next" onclick="nextQuestion()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition disabled:opacity-40">
+                        Câu tiếp <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-6 text-center text-xs text-slate-500">
+        <p>IELTS Speaking Part 1 Practice • Nguồn tài liệu: English Basic Course A1 (Lessons 2-16)</p>
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Expanded Dataset with 2-3 sentence Sample Answers for A1-A2 IELTS Part 1
+        const lessonsData = [
+            {
+                topic: "Personal Information",
+                questions: [
+                    { 
+                        q: "Do you work or are you a student?", 
+                        trans: "Bạn đang đi làm hay là học sinh/sinh viên?", 
+                        sampleEn: "I am a high school student. I study at a big school in my hometown, and my favorite subject is English.", 
+                        sampleVi: "Tôi là học sinh cấp 3. Tôi học tại một ngôi trường lớn ở quê nhà, và môn học yêu thích của tôi là tiếng Anh.", 
+                        structure: "I am a + [student/worker]. I [study/work] at [place] and I like...", 
+                        vocab: [{en: "High school student", vi: "Học sinh cấp 3"}, {en: "Favorite subject", vi: "Món học yêu thích"}] 
+                    },
+                    { 
+                        q: "Where are you from?", 
+                        trans: "Bạn đến từ đâu?", 
+                        sampleEn: "I am from Vietnam. I live in a beautiful city with my family, and it is a very friendly place.", 
+                        sampleVi: "Tôi đến từ Việt Nam. Tôi sống ở một thành phố đẹp cùng gia đình, và đó là một nơi rất thân thiện.", 
+                        structure: "I am from + [Country/City]. I live in [city] and it is...", 
+                        vocab: [{en: "Beautiful city", vi: "Thành phố đẹp"}, {en: "Friendly place", vi: "Nơi thân thiện"}] 
+                    },
+                    { 
+                        q: "How old are you?", 
+                        trans: "Bạn bao nhiêu tuổi?", 
+                        sampleEn: "I am 18 years old. My birthday is in May, and I usually celebrate it with my friends.", 
+                        sampleVi: "Tôi 18 tuổi. Sinh nhật của tôi vào tháng 5, và tôi thường ăn mừng cùng bạn bè.", 
+                        structure: "I am + [age] years old. My birthday is in [month]...", 
+                        vocab: [{en: "Years old", vi: "Tuổi"}, {en: "Celebrate", vi: "Ăn mừng"}] 
+                    },
+                    { 
+                        q: "What is your full name?", 
+                        trans: "Họ và tên đầy đủ của bạn là gì?", 
+                        sampleEn: "My full name is Nguyen Van Nam. People usually call me Nam for short.", 
+                        sampleVi: "Họ và tên đầy đủ của tôi là Nguyễn Văn Nam. Mọi người thường gọi tắt tôi là Nam.", 
+                        structure: "My full name is + [Full Name]. You can call me + [Nickname].", 
+                        vocab: [{en: "Full name", vi: "Họ và tên đầy đủ"}, {en: "Call me for short", vi: "Gọi tắt tên tôi là"}] 
+                    },
+                    { 
+                        q: "How do you spell your name?", 
+                        trans: "Đánh vần tên bạn như thế nào?", 
+                        sampleEn: "It is N-A-M. It is a very common and short name in Vietnam.", 
+                        sampleVi: "Đó là N-A-M. Đó là một cái tên rất phổ biến và ngắn ở Việt Nam.", 
+                        structure: "It is + [Spell letters]. It is a [short/common] name.", 
+                        vocab: [{en: "Spell", vi: "Đánh vần"}, {en: "Common name", vi: "Tên phổ biến"}] 
+                    },
+                    { 
+                        q: "What job would you like to have in the future?", 
+                        trans: "Công việc nào bạn muốn làm trong tương lai?", 
+                        sampleEn: "I would like to be an English teacher in the future. I want to teach young children because I love working with kids.", 
+                        sampleVi: "Tôi muốn trở thành giáo viên tiếng Anh trong tương lai. Tôi muốn dạy trẻ em vì tôi rất thích làm việc với trẻ nhỏ.", 
+                        structure: "I would like to be a/an + [Job]. I want to [action] because...", 
+                        vocab: [{en: "English teacher", vi: "Giáo viên tiếng Anh"}, {en: "Teach young children", vi: "Dạy trẻ em"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Family",
+                questions: [
+                    { 
+                        q: "How many people are there in your family?", 
+                        trans: "Có bao nhiêu người trong gia đình bạn?", 
+                        sampleEn: "There are four people in my family: my parents, my brother, and me. We are very close and we often eat meals together.", 
+                        sampleVi: "Có 4 người trong gia đình tôi: bố mẹ, anh trai và tôi. Chúng tôi rất thân thiết và thường ăn cơm cùng nhau.", 
+                        structure: "There are + [number] people in my family: [members]. We often...", 
+                        vocab: [{en: "Close family", vi: "Gia đình thân thiết"}, {en: "Eat meals together", vi: "Ăn cơm cùng nhau"}] 
+                    },
+                    { 
+                        q: "What does your father or mother do?", 
+                        trans: "Bố hoặc mẹ của bạn làm nghề gì?", 
+                        sampleEn: "My mother is a nurse at a hospital near our house. She works very hard every day, and she loves helping sick people.", 
+                        sampleVi: "Mẹ tôi là y tá tại một bệnh viện gần nhà. Bà làm việc rất chăm chỉ mỗi ngày và rất thích giúp đỡ người bệnh.", 
+                        structure: "My mother/father is a/an + [Job]. She/He works at...", 
+                        vocab: [{en: "Nurse", vi: "Y tá"}, {en: "Work hard", vi: "Làm việc chăm chỉ"}] 
+                    },
+                    { 
+                        q: "How old is your father?", 
+                        trans: "Bố bạn bao nhiêu tuổi?", 
+                        sampleEn: "My father is 48 years old. He looks young for his age because he exercises every morning.", 
+                        sampleVi: "Bố tôi 48 tuổi. Ông trông rất trẻ so với tuổi vì ông tập thể dục mỗi sáng.", 
+                        structure: "My father is + [Age] years old. He looks [young/healthy] because...", 
+                        vocab: [{en: "Look young", vi: "Trông trẻ trung"}, {en: "Exercise every morning", vi: "Tập thể dục mỗi sáng"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Friends",
+                questions: [
+                    { 
+                        q: "Who is your best friend?", 
+                        trans: "Ai là bạn thân nhất của bạn?", 
+                        sampleEn: "My best friend is Linh. We have been friends for three years, and we study in the same class.", 
+                        sampleVi: "Bạn thân nhất của tôi là Linh. Chúng tôi đã làm bạn được 3 năm và học chung một lớp.", 
+                        structure: "My best friend is + [Name]. We have been friends for [years]...", 
+                        vocab: [{en: "Best friend", vi: "Bạn thân nhất"}, {en: "Same class", vi: "Cùng lớp"}] 
+                    },
+                    { 
+                        q: "What does he/she look like?", 
+                        trans: "Anh ấy/Cô ấy trông như thế nào?", 
+                        sampleEn: "She is tall and slim with long black hair. She has a bright smile and wears glasses.", 
+                        sampleVi: "Cô ấy cao và mảnh khảnh với mái tóc đen dài. Cô ấy có nụ cười rạng rỡ và đeo kính.", 
+                        structure: "She/He is + [tall/slim] with [hair color/length]. She has...", 
+                        vocab: [{en: "Slim", vi: "Mảnh khảnh"}, {en: "Bright smile", vi: "Nụ cười rạng rỡ"}] 
+                    },
+                    { 
+                        q: "What does he/she often wear to school?", 
+                        trans: "Anh ấy/Cô ấy thường mặc gì đi học?", 
+                        sampleEn: "She usually wears a white shirt and dark trousers to school. Sometimes, she wears a warm jacket on cold days.", 
+                        sampleVi: "Cô ấy thường mặc áo sơ mi trắng và quần tây tối màu đi học. Thỉnh thoảng cô ấy mặc áo khoác ấm vào ngày lạnh.", 
+                        structure: "She usually wears + [clothes] to school. Sometimes she...", 
+                        vocab: [{en: "White shirt", vi: "Áo sơ mi trắng"}, {en: "Dark trousers", vi: "Quần tây tối màu"}] 
+                    },
+                    { 
+                        q: "Do you have many friends?", 
+                        trans: "Bạn có nhiều bạn bè không?", 
+                        sampleEn: "Yes, I do. I have many friends at school, but I only have two or three close friends.", 
+                        sampleVi: "Vâng, tôi có. Tôi có nhiều bạn ở trường, nhưng tôi chỉ có 2 đến 3 người bạn thân.", 
+                        structure: "Yes, I have many friends at [school/work], but I only have...", 
+                        vocab: [{en: "Close friends", vi: "Bạn thân thiết"}, {en: "At school", vi: "Ở trường"}] 
+                    },
+                    { 
+                        q: "Where is your best friend from?", 
+                        trans: "Bạn thân của bạn đến từ đâu?", 
+                        sampleEn: "She is from Danang city. She moved to my neighborhood two years ago, and we became close friends quickly.", 
+                        sampleVi: "Cô ấy đến từ thành phố Đà Nẵng. Cô ấy chuyển đến khu nhà tôi 2 năm trước và chúng tôi thân nhau rất nhanh.", 
+                        structure: "She/He is from + [City/Place]. She moved here...", 
+                        vocab: [{en: "Move to neighborhood", vi: "Chuyển tới khu xóm"}, {en: "Become close friends", vi: "Trở thành bạn thân"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Daily routines",
+                questions: [
+                    { 
+                        q: "What do you do in the evening?", 
+                        trans: "Bạn làm gì vào buổi tối?", 
+                        sampleEn: "In the evening, I usually do my homework and listen to music. After that, I chat with my family before going to bed.", 
+                        sampleVi: "Vào buổi tối, tôi thường làm bài tập và nghe nhạc. Sau đó, tôi trò chuyện với gia đình trước khi đi ngủ.", 
+                        structure: "In the evening, I usually + [action 1] and [action 2]. After that...", 
+                        vocab: [{en: "Do homework", vi: "Làm bài tập"}, {en: "Chat with family", vi: "Trò chuyện với gia đình"}] 
+                    },
+                    { 
+                        q: "What time do you go to bed?", 
+                        trans: "Mấy giờ bạn đi ngủ?", 
+                        sampleEn: "I go to bed at around 10:30 PM every night. I try to sleep early so I can feel energetic in the morning.", 
+                        sampleVi: "Tôi đi ngủ vào khoảng 10:30 tối mỗi đêm. Tôi cố gắng ngủ sớm để cảm thấy tràn đầy năng lượng vào buổi sáng.", 
+                        structure: "I go to bed at + [Time]. I try to sleep early so...", 
+                        vocab: [{en: "Around 10:30 PM", vi: "Khoảng 10h30 tối"}, {en: "Feel energetic", vi: "Cảm thấy năng lượng"}] 
+                    },
+                    { 
+                        q: "What time do you get up?", 
+                        trans: "Mấy giờ bạn thức dậy?", 
+                        sampleEn: "I usually get up at 6 AM every weekday. After getting up, I stretch my body and wash my face.", 
+                        sampleVi: "Tôi thường thức dậy lúc 6 giờ sáng các ngày trong tuần. Sau khi dậy, tôi vươn người và rửa mặt.", 
+                        structure: "I get up at + [Time]. After getting up, I...", 
+                        vocab: [{en: "Weekday", vi: "Ngày trong tuần"}, {en: "Wash face", vi: "Rửa mặt"}] 
+                    },
+                    { 
+                        q: "What do you do in the morning?", 
+                        trans: "Bạn làm gì vào buổi sáng?", 
+                        sampleEn: "In the morning, I brush my teeth, eat a healthy breakfast, and walk to school with my neighbor.", 
+                        sampleVi: "Vào buổi sáng, tôi đánh răng, ăn bữa sáng lành mạnh và đi bộ đến trường cùng hàng xóm.", 
+                        structure: "In the morning, I [action 1], [action 2], and...", 
+                        vocab: [{en: "Healthy breakfast", vi: "Bữa sáng lành mạnh"}, {en: "Walk to school", vi: "Đi bộ đi học"}] 
+                    },
+                    { 
+                        q: "What time do you go to school?", 
+                        trans: "Mấy giờ bạn đi học?", 
+                        sampleEn: "I leave home and go to school at 7 o'clock. Classes start at 7:30, so I am never late.", 
+                        sampleVi: "Tôi rời nhà đi học lúc 7 giờ. Lớp học bắt đầu lúc 7:30 nên tôi không bao giờ đi muộn.", 
+                        structure: "I go to school at + [Time]. Classes start at...", 
+                        vocab: [{en: "Leave home", vi: "Rời khỏi nhà"}, {en: "Never late", vi: "Không bao giờ muộn"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Activities and free time",
+                questions: [
+                    { 
+                        q: "What do you usually do in a day?", 
+                        trans: "Bạn thường làm gì trong một ngày?", 
+                        sampleEn: "I go to school in the morning and do homework in the afternoon. In the evening, I relax by watching movie videos.", 
+                        sampleVi: "Tôi đi học vào buổi sáng và làm bài tập vào buổi chiều. Buổi tối, tôi nghỉ ngơi bằng cách xem video phim.", 
+                        structure: "I [morning action] in the morning and [afternoon action] in the afternoon.", 
+                        vocab: [{en: "In the afternoon", vi: "Vào buổi chiều"}, {en: "Relax by...", vi: "Nghỉ ngơi bằng cách..."}] 
+                    },
+                    { 
+                        q: "Do you like staying at home or going out?", 
+                        trans: "Bạn thích ở nhà hay đi ra ngoài hơn?", 
+                        sampleEn: "I prefer staying at home on weekdays because it is quiet. However, I like going out with friends on weekends.", 
+                        sampleVi: "Tôi thích ở nhà vào các ngày trong tuần hơn vì nó yên tĩnh. Tuy nhiên, tôi thích đi chơi với bạn vào cuối tuần.", 
+                        structure: "I prefer [staying at home / going out] because... However, on weekends...", 
+                        vocab: [{en: "Prefer staying at home", vi: "Thích ở nhà hơn"}, {en: "On weekends", vi: "Vào cuối tuần"}] 
+                    },
+                    { 
+                        q: "What do you do in your free time?", 
+                        trans: "Bạn làm gì vào thời gian rảnh?", 
+                        sampleEn: "In my free time, I love playing badminton with my cousin. It helps me stay fit and reduce stress after studying.", 
+                        sampleVi: "Vào thời gian rảnh, tôi thích chơi cầu lông với anh họ. Nó giúp tôi giữ dáng và giảm căng thẳng sau khi học.", 
+                        structure: "In my free time, I love + [V-ing]. It helps me...", 
+                        vocab: [{en: "Stay fit", vi: "Giữ dáng/khỏe mạnh"}, {en: "Reduce stress", vi: "Giảm căng thẳng"}] 
+                    },
+                    { 
+                        q: "Do you like watching TV or listening to music?", 
+                        trans: "Bạn thích xem TV hay nghe nhạc hơn?", 
+                        sampleEn: "I like listening to music much more than watching TV. Music helps me feel relaxed when I am tired.", 
+                        sampleVi: "Tôi thích nghe nhạc hơn nhiều so với xem TV. Âm nhạc giúp tôi cảm thấy thư giãn khi mệt mỏi.", 
+                        structure: "I like [listening to music/watching TV] much more because it helps me...", 
+                        vocab: [{en: "Much more than...", vi: "Nhiều hơn so với..."}, {en: "Feel relaxed", vi: "Cảm thấy thư giãn"}] 
+                    },
+                    { 
+                        q: "How often do you go out with your friends?", 
+                        trans: "Bao lâu thì bạn đi chơi với bạn bè một lần?", 
+                        sampleEn: "I go out with my friends twice a week, usually on Saturday and Sunday. We often drink coffee and chat.", 
+                        sampleVi: "Tôi đi chơi với bạn 2 lần một tuần, thường vào thứ 7 và Chủ nhật. Chúng tôi thường uống cà phê và trò chuyện.", 
+                        structure: "I go out with my friends [frequency] on [days]. We often...", 
+                        vocab: [{en: "Twice a week", vi: "2 lần một tuần"}, {en: "Drink coffee and chat", vi: "Uống cà phê và trò chuyện"}] 
+                    },
+                    { 
+                        q: "Who cleans the house in your family?", 
+                        trans: "Ai dọn dẹp nhà cửa trong gia đình bạn?", 
+                        sampleEn: "My mother cleans the house most of the time. Sometimes, my brother and I help her sweep the floor on weekends.", 
+                        sampleVi: "Mẹ tôi dọn dẹp nhà cửa hầu hết thời gian. Thỉnh thoảng, anh trai và tôi giúp mẹ quét nhà vào cuối tuần.", 
+                        structure: "My [member] cleans the house. Sometimes, I help by...", 
+                        vocab: [{en: "Most of the time", vi: "Hầu hết thời gian"}, {en: "Sweep the floor", vi: "Quét nhà"}] 
+                    },
+                    { 
+                        q: "What do you usually do to help your family at home?", 
+                        trans: "Bạn thường làm gì để giúp đỡ gia đình ở nhà?", 
+                        sampleEn: "I usually water the plants in the garden and take out the trash. I also help my mom wash the vegetables for dinner.", 
+                        sampleVi: "Tôi thường tưới cây trong vườn và đi đổ rác. Tôi cũng giúp mẹ rửa rau cho bữa tối.", 
+                        structure: "I usually + [task 1] and [task 2]. I also help...", 
+                        vocab: [{en: "Water the plants", vi: "Tưới cây"}, {en: "Take out the trash", vi: "Đi đổ rác"}] 
+                    },
+                    { 
+                        q: "Who washes the dishes in your family?", 
+                        trans: "Ai rửa bát trong gia đình bạn?", 
+                        sampleEn: "I usually wash the dishes after dinner. It is my daily responsibility, and it doesn't take much time.", 
+                        sampleVi: "Tôi thường rửa bát sau bữa tối. Đó là trách nhiệm hàng ngày của tôi và nó không mất quá nhiều thời gian.", 
+                        structure: "I usually wash the dishes after [meal]. It is my...", 
+                        vocab: [{en: "Daily responsibility", vi: "Trách nhiệm hàng ngày"}, {en: "Take much time", vi: "Tốn nhiều thời gian"}] 
+                    },
+                    { 
+                        q: "Do you help your mother at home?", 
+                        trans: "Bạn có giúp đỡ mẹ ở nhà không?", 
+                        sampleEn: "Yes, I do. I always help my mother cook dinner and set the table before we eat.", 
+                        sampleVi: "Vâng, tôi có. Tôi luôn giúp mẹ nấu ăn và dọn bàn ăn trước khi cả nhà dùng bữa.", 
+                        structure: "Yes, I do. I always help my mother + [verb]...", 
+                        vocab: [{en: "Cook dinner", vi: "Nấu bữa tối"}, {en: "Set the table", vi: "Dọn bàn ăn"}] 
+                    },
+                    { 
+                        q: "How often do you clean your room?", 
+                        trans: "Bao lâu thì bạn dọn phòng một lần?", 
+                        sampleEn: "I clean my bedroom every Sunday morning. I tidy up my desk and make my bed so the room looks clean.", 
+                        sampleVi: "Tôi dọn phòng ngủ vào mỗi sáng Chủ Nhật. Tôi dọn dẹp bàn học và gấp chăn màn để phòng trông sạch sẽ.", 
+                        structure: "I clean my room every + [Day]. I tidy up...", 
+                        vocab: [{en: "Tidy up", vi: "Dọn dẹp ngăn nắp"}, {en: "Make my bed", vi: "Gấp chăn màn/giường"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Time and special days",
+                questions: [
+                    { 
+                        q: "When is your birthday?", 
+                        trans: "Sinh nhật của bạn là khi nào?", 
+                        sampleEn: "My birthday is on October 15th. It is in autumn, which is my favorite season of the year.", 
+                        sampleVi: "Sinh nhật của tôi là ngày 15 tháng 10. Nó vào mùa thu, mùa yêu thích nhất trong năm của tôi.", 
+                        structure: "My birthday is on + [Date]. It is in [Season]...", 
+                        vocab: [{en: "October 15th", vi: "Ngày 15 tháng 10"}, {en: "Favorite season", vi: "Mùa yêu thích"}] 
+                    },
+                    { 
+                        q: "What do you do on your birthday?", 
+                        trans: "Bạn làm gì vào ngày sinh nhật?", 
+                        sampleEn: "On my birthday, I have a small party at home with my close friends. We eat birthday cake and sing songs together.", 
+                        sampleVi: "Vào ngày sinh nhật, tôi tổ chức tiệc nhỏ tại nhà với bạn thân. Chúng tôi ăn bánh sinh nhật và hát hò cùng nhau.", 
+                        structure: "On my birthday, I have a party with... We eat...", 
+                        vocab: [{en: "Small party", vi: "Bữa tiệc nhỏ"}, {en: "Birthday cake", vi: "Bánh sinh nhật"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Weather",
+                questions: [
+                    { 
+                        q: "How is the weather today?", 
+                        trans: "Thời tiết hôm nay thế nào?", 
+                        sampleEn: "The weather today is very sunny and warm. It is perfect for doing outdoor activities like cycling.", 
+                        sampleVi: "Thời tiết hôm nay rất nắng và ấm áp. Thật hoàn hảo để tham gia các hoạt động ngoài trời như đi xe đạp.", 
+                        structure: "The weather today is + [adjectives]. It is perfect for...", 
+                        vocab: [{en: "Sunny and warm", vi: "Nắng và ấm áp"}, {en: "Outdoor activities", vi: "Hoạt động ngoài trời"}] 
+                    },
+                    { 
+                        q: "What is your favourite season?", 
+                        trans: "Mùa yêu thích của bạn là mùa nào?", 
+                        sampleEn: "My favorite season is autumn because the weather is cool and pleasant. Also, the trees look beautiful when leaves change color.", 
+                        sampleVi: "Mùa yêu thích của tôi là mùa thu vì thời tiết mát mẻ và dễ chịu. Ngoài ra, cây cối trông rất đẹp khi lá đổi màu.", 
+                        structure: "My favorite season is + [Season] because... Also, ...", 
+                        vocab: [{en: "Cool and pleasant", vi: "Mát mẻ dễ chịu"}, {en: "Leaves change color", vi: "Lá cây đổi màu"}] 
+                    },
+                    { 
+                        q: "What do you do when it is rainy?", 
+                        trans: "Bạn làm gì khi trời mưa?", 
+                        sampleEn: "When it is rainy, I prefer staying indoors. I usually make a hot cup of tea and read my favorite book.", 
+                        sampleVi: "Khi trời mưa, tôi thích ở trong nhà hơn. Tôi thường pha một cốc trà nóng và đọc cuốn sách yêu thích.", 
+                        structure: "When it is rainy, I stay indoors. I usually...", 
+                        vocab: [{en: "Stay indoors", vi: "Ở trong nhà"}, {en: "Hot cup of tea", vi: "Cốc trà nóng"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Your home",
+                questions: [
+                    { 
+                        q: "What is your favourite room in your home?", 
+                        trans: "Phòng yêu thích của bạn trong nhà là phòng nào?", 
+                        sampleEn: "My favorite room is my bedroom because it is quiet and comfortable. I can relax and read books there after a long day.", 
+                        sampleVi: "Phòng yêu thích của tôi là phòng ngủ vì nó yên tĩnh và thoải mái. Tôi có thể nghỉ ngơi và đọc sách ở đó sau ngày dài.", 
+                        structure: "My favorite room is [room] because it is... I can...", 
+                        vocab: [{en: "Quiet and comfortable", vi: "Yên tĩnh thoải mái"}, {en: "After a long day", vi: "Sau một ngày dài"}] 
+                    },
+                    { 
+                        q: "Do you live in a house or an apartment?", 
+                        trans: "Bạn sống trong nhà riêng hay căn hộ?", 
+                        sampleEn: "I live in a two-story house in a peaceful street. It has a small garden in front where my dad grows flowers.", 
+                        sampleVi: "Tôi sống trong căn nhà 2 tầng ở một con phố bình yên. Nó có khu vườn nhỏ trước nhà nơi bố tôi trồng hoa.", 
+                        structure: "I live in a [house/apartment] in [place]. It has...", 
+                        vocab: [{en: "Two-story house", vi: "Nhà 2 tầng"}, {en: "Peaceful street", vi: "Con phố bình yên"}] 
+                    },
+                    { 
+                        q: "How many rooms are there in your home?", 
+                        trans: "Có bao nhiêu phòng trong nhà bạn?", 
+                        sampleEn: "There are five rooms in my home: a living room, a kitchen, two bedrooms, and a bathroom. My house is not very big, but it is cozy.", 
+                        sampleVi: "Có 5 phòng trong nhà tôi: phòng khách, bếp, 2 phòng ngủ và nhà tắm. Nhà tôi không quá lớn nhưng rất ấm cúng.", 
+                        structure: "There are + [number] rooms in my home: [list]. It is...", 
+                        vocab: [{en: "Cozy house", vi: "Ngôi nhà ấm cúng"}, {en: "Living room", vi: "Phòng khách"}] 
+                    },
+                    { 
+                        q: "What is in your bedroom?", 
+                        trans: "Có những đồ vật gì trong phòng ngủ của bạn?", 
+                        sampleEn: "In my bedroom, there is a comfortable bed, a wooden desk, and a big bookshelf full of novels.", 
+                        sampleVi: "Trong phòng ngủ của tôi có một chiếc giường thoải mái, một chiếc bàn gỗ và giá sách lớn đầy truyện tiểu thuyết.", 
+                        structure: "In my bedroom, there is a [item 1], a [item 2], and...", 
+                        vocab: [{en: "Wooden desk", vi: "Bàn bằng gỗ"}, {en: "Bookshelf", vi: "Giá sách"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Neighborhood and places",
+                questions: [
+                    { 
+                        q: "Do you like your neighborhood?", 
+                        trans: "Bạn có thích khu xóm/xung quanh nhà bạn không?", 
+                        sampleEn: "Yes, I really like my neighborhood because the neighbors are extremely friendly and helpful. Also, it is very safe at night.", 
+                        sampleVi: "Có, tôi rất thích khu xóm mình vì hàng xóm cực kỳ thân thiện và hay giúp đỡ. Ngoài ra, ban đêm rất an toàn.", 
+                        structure: "Yes, I really like my neighborhood because... Also, it is...", 
+                        vocab: [{en: "Friendly neighbors", vi: "Hàng xóm thân thiện"}, {en: "Safe at night", vi: "An toàn vào ban đêm"}] 
+                    },
+                    { 
+                        q: "Are there any restaurants near your house?", 
+                        trans: "Có nhà hàng nào gần nhà bạn không?", 
+                        sampleEn: "Yes, there are several small restaurants near my house. They sell traditional Vietnamese dishes like Pho and Banh Mi.", 
+                        sampleVi: "Có, có một vài nhà hàng nhỏ gần nhà tôi. Họ bán các món ăn truyền thống Việt Nam như Phở và Bánh Mì.", 
+                        structure: "Yes, there are several [types] restaurants near my house. They sell...", 
+                        vocab: [{en: "Several small restaurants", vi: "Một vài nhà hàng nhỏ"}, {en: "Traditional dishes", vi: "Món ăn truyền thống"}] 
+                    },
+                    { 
+                        q: "Is there a supermarket near your home?", 
+                        trans: "Có siêu thị nào gần nhà bạn không?", 
+                        sampleEn: "Yes, there is a large supermarket just 5 minutes away from my home. My mom and I often walk there to buy groceries.", 
+                        sampleVi: "Có, có một siêu thị lớn chỉ cách nhà tôi 5 phút. Mẹ và tôi thường đi bộ đến đó để mua nhu yếu phẩm.", 
+                        structure: "Yes, there is a supermarket just [time] away. We go there to...", 
+                        vocab: [{en: "5 minutes away", vi: "Cách 5 phút"}, {en: "Buy groceries", vi: "Mua đồ tạp hóa/nhu yếu phẩm"}] 
+                    },
+                    { 
+                        q: "What is your favourite place in your city?", 
+                        trans: "Địa điểm yêu thích của bạn ở thành phố là gì?", 
+                        sampleEn: "My favorite place in my city is the central park near the lake. I love going there in the evening to enjoy fresh air.", 
+                        sampleVi: "Địa điểm yêu thích của tôi trong thành phố là công viên trung tâm gần hồ. Tôi thích đến đó vào buổi tối để hít thở không khí trong lành.", 
+                        structure: "My favorite place is [place]. I love going there to...", 
+                        vocab: [{en: "Central park", vi: "Công viên trung tâm"}, {en: "Fresh air", vi: "Không khí trong lành"}] 
+                    },
+                    { 
+                        q: "How do you usually get there?", 
+                        trans: "Bạn thường đến đó bằng phương tiện gì?", 
+                        sampleEn: "I usually get there by electric motorbike. It takes about 10 minutes from my house, and it is very convenient.", 
+                        sampleVi: "Tôi thường đến đó bằng xe máy điện. Mất khoảng 10 phút từ nhà tôi và rất tiện lợi.", 
+                        structure: "I usually get there by [transport]. It takes about [time]...", 
+                        vocab: [{en: "Electric motorbike", vi: "Xe máy điện"}, {en: "Convenient", vi: "Tiện lợi"}] 
+                    },
+                    { 
+                        q: "Is it easy to get around your town? Why?", 
+                        trans: "Di chuyển xung quanh thị trấn của bạn có dễ không? Tại sao?", 
+                        sampleEn: "Yes, it is very easy to get around because public buses are cheap and frequent. There are rarely traffic jams here.", 
+                        sampleVi: "Có, rất dễ di chuyển vì xe buýt công cộng rẻ và chuyến chạy liên tục. Ở đây hiếm khi bị tắc đường.", 
+                        structure: "Yes, it is easy because [buses/roads] are... There are rarely...", 
+                        vocab: [{en: "Public buses", vi: "Xe buýt công cộng"}, {en: "Traffic jams", vi: "Tắc đường"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Transportation",
+                questions: [
+                    { 
+                        q: "How do you go to school?", 
+                        trans: "Bạn đi học bằng phương tiện gì?", 
+                        sampleEn: "I usually go to school by bicycle with my classmate. It keeps me healthy and helps protect the environment.", 
+                        sampleVi: "Tôi thường đi học bằng xe đạp cùng bạn cùng lớp. Nó giúp tôi khỏe mạnh và bảo vệ môi trường.", 
+                        structure: "I go to school by [transport]. It helps me...", 
+                        vocab: [{en: "Keep healthy", vi: "Giữ sức khỏe tốt"}, {en: "Protect environment", vi: "Bảo vệ môi trường"}] 
+                    },
+                    { 
+                        q: "Do you like riding a bicycle?", 
+                        trans: "Bạn có thích đi xe đạp không?", 
+                        sampleEn: "Yes, I really enjoy riding a bicycle in the late afternoon. It is fun and a great way to exercise.", 
+                        sampleVi: "Có, tôi rất thích đi xe đạp vào chiều muộn. Nó vừa vui vừa là cách tuyệt vời để tập thể dục.", 
+                        structure: "Yes, I enjoy riding a bicycle because it is... and...", 
+                        vocab: [{en: "Late afternoon", vi: "Chiều muộn"}, {en: "Great way to exercise", vi: "Cách tập thể dục tuyệt vời"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Food and drinks",
+                questions: [
+                    { 
+                        q: "What do you usually have for breakfast?", 
+                        trans: "Bạn thường ăn gì vào bữa sáng?", 
+                        sampleEn: "I usually have bread with fried eggs and a glass of warm milk. It gives me enough energy for the morning.", 
+                        sampleVi: "Tôi thường ăn bánh mì với trứng ốp la và một ly sữa ấm. Nó cho tôi đủ năng lượng cho buổi sáng.", 
+                        structure: "I usually have [food] and [drink] for breakfast. It gives me...", 
+                        vocab: [{en: "Fried eggs", vi: "Trứng ốp la"}, {en: "Enough energy", vi: "Đủ năng lượng"}] 
+                    },
+                    { 
+                        q: "Do you like eating Vietnamese food?", 
+                        trans: "Bạn có thích ăn món ăn Việt Nam không?", 
+                        sampleEn: "Yes, I do. I like Vietnamese food because it is delicious, and I often eat it with my family. My favorite Vietnamese foods are bread and noodles.", 
+                        sampleVi: "Có, tôi thích. Tôi thích đồ ăn Việt Nam vì nó rất ngon và tôi thường ăn cùng gia đình. Món Việt yêu thích của tôi là bánh mì và bún/phở.", 
+                        structure: "Yes, I do. I like Vietnamese food because it is [delicious]. My favorite foods are...", 
+                        vocab: [{en: "Delicious", vi: "Thơm ngon"}, {en: "Favorite foods", vi: "Món ăn yêu thích"}] 
+                    },
+                    { 
+                        q: "Do you like having dinner with your family?", 
+                        trans: "Bạn có thích ăn tối cùng gia đình không?", 
+                        sampleEn: "Yes, I love having dinner with my family every day. It is a warm time when we can share our day with each other.", 
+                        sampleVi: "Có, tôi rất thích ăn tối với gia đình mỗi ngày. Đó là khoảng thời gian ấm áp khi chúng tôi chia sẻ về một ngày của mình với nhau.", 
+                        structure: "Yes, I love having dinner with my family because it is a time to...", 
+                        vocab: [{en: "Warm time", vi: "Thời gian ấm áp"}, {en: "Share our day", vi: "Chia sẻ về một ngày trôi qua"}] 
+                    },
+                    { 
+                        q: "What is your favourite food?", 
+                        trans: "Món ăn yêu thích của bạn là gì?", 
+                        sampleEn: "My favorite food is beef noodle soup, known as Pho. I love its rich soup flavor and soft noodles.", 
+                        sampleVi: "Món ăn yêu thích của tôi là phở bò. Tôi yêu hương vị nước dùng đậm đà và bánh phở mềm.", 
+                        structure: "My favorite food is [food]. I love it because...", 
+                        vocab: [{en: "Beef noodle soup", vi: "Phở bò"}, {en: "Rich soup flavor", vi: "Nước dùng đậm đà"}] 
+                    },
+                    { 
+                        q: "Do you like drinking milk or juice?", 
+                        trans: "Bạn thích uống sữa hay nước trái cây hơn?", 
+                        sampleEn: "I prefer drinking fresh orange juice because it has lots of Vitamin C. It makes me feel refreshed on hot days.", 
+                        sampleVi: "Tôi thích uống nước cam tươi hơn vì có nhiều Vitamin C. Nó giúp tôi cảm thấy sảng khoái trong những ngày nóng.", 
+                        structure: "I prefer drinking [drink] because it has... It makes me feel...", 
+                        vocab: [{en: "Orange juice", vi: "Nước cam"}, {en: "Feel refreshed", vi: "Thấy sảng khoái"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Clothes",
+                questions: [
+                    { 
+                        q: "What colour clothes do you like to wear?", 
+                        trans: "Bạn thích mặc quần áo màu gì?", 
+                        sampleEn: "I like wearing white and blue clothes. These colors make me look clean and feel comfortable.", 
+                        sampleVi: "Tôi thích mặc quần áo màu trắng và xanh dương. Những màu này làm tôi trông sạch sẽ và cảm thấy thoải mái.", 
+                        structure: "I like wearing [colors] clothes. These colors make me...", 
+                        vocab: [{en: "White and blue", vi: "Trắng và xanh"}, {en: "Look clean", vi: "Trông gọn gàng sạch sẽ"}] 
+                    },
+                    { 
+                        q: "How often do you buy new clothes?", 
+                        trans: "Bao lâu thì bạn mua quần áo mới một lần?", 
+                        sampleEn: "I buy new clothes once every two months. I usually go shopping when there are special sales.", 
+                        sampleVi: "Tôi mua quần áo mới 2 tháng một lần. Tôi thường đi mua sắm khi có đợt giảm giá đặc biệt.", 
+                        structure: "I buy new clothes [frequency]. I usually go shopping when...", 
+                        vocab: [{en: "Once every two months", vi: "2 tháng 1 lần"}, {en: "Special sales", vi: "Đợt giảm giá"}] 
+                    },
+                    { 
+                        q: "What do you wear when you go to school or work?", 
+                        trans: "Bạn mặc gì khi đi học hoặc đi làm?", 
+                        sampleEn: "I wear a school uniform with a white shirt and blue trousers. It looks neat and polite.", 
+                        sampleVi: "Tôi mặc đồng phục trường gồm áo sơ mi trắng và quần tây xanh. Nó trông ngăn nắp và lịch sự.", 
+                        structure: "I wear [clothes] when I go to school. It looks...", 
+                        vocab: [{en: "School uniform", vi: "Đồng phục nhà trường"}, {en: "Neat and polite", vi: "Ngăn nắp và lịch sự"}] 
+                    },
+                    { 
+                        q: "What do you wear when it is hot?", 
+                        trans: "Bạn mặc gì khi trời nóng?", 
+                        sampleEn: "When it is hot, I wear light T-shirts, shorts, and sandals. They keep me cool all day.", 
+                        sampleVi: "Khi trời nóng, tôi mặc áo phông mỏng, quần đùi và dép sandal. Chúng giữ tôi mát mẻ cả ngày.", 
+                        structure: "When it is hot, I wear [clothes]. They keep me...", 
+                        vocab: [{en: "Light T-shirt", vi: "Áo phông nhẹ/mỏng"}, {en: "Keep me cool", vi: "Giữ tôi mát mẻ"}] 
+                    },
+                    { 
+                        q: "Where do you usually buy clothes?", 
+                        trans: "Bạn thường mua quần áo ở đâu?", 
+                        sampleEn: "I usually buy clothes at a clothing store near my house. Sometimes, I also order online because it is convenient.", 
+                        sampleVi: "Tôi thường mua quần áo tại một cửa hàng thời trang gần nhà. Thỉnh thoảng tôi cũng đặt trực tuyến vì nó tiện lợi.", 
+                        structure: "I usually buy clothes at [place]. Sometimes, I order online because...", 
+                        vocab: [{en: "Clothing store", vi: "Cửa hàng thời trang"}, {en: "Order online", vi: "Đặt hàng qua mạng"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Abilities",
+                questions: [
+                    { 
+                        q: "Can you play sports well?", 
+                        trans: "Bạn có chơi thể thao giỏi không?", 
+                        sampleEn: "Yes, I can play badminton quite well. I often play with my classmates after school, and I usually win.", 
+                        sampleVi: "Có, tôi có thể chơi cầu lông khá tốt. Tôi thường chơi với bạn sau giờ học và tôi thường thắng.", 
+                        structure: "Yes, I can play [sport] well. I often play with...", 
+                        vocab: [{en: "Play badminton", vi: "Chơi cầu lông"}, {en: "Usually win", vi: "Thường xuyên thắng"}] 
+                    },
+                    { 
+                        q: "Do you want to speak English well?", 
+                        trans: "Bạn có muốn nói tiếng Anh giỏi không?", 
+                        sampleEn: "Yes, of course! Speaking English fluently will help me get a good job and travel around the world easily.", 
+                        sampleVi: "Tất nhiên là có! Nói tiếng Anh trôi chảy sẽ giúp tôi có công việc tốt và đi du lịch thế giới dễ dàng.", 
+                        structure: "Yes, of course! Speaking English well helps me...", 
+                        vocab: [{en: "Speak fluently", vi: "Nói trôi chảy"}, {en: "Travel around the world", vi: "Du lịch thế giới"}] 
+                    },
+                    { 
+                        q: "What skills do you want to learn in the future?", 
+                        trans: "Kỹ năng nào bạn muốn học trong tương lai?", 
+                        sampleEn: "In the future, I want to learn how to swim and cook international dishes. These skills are very useful for daily life.", 
+                        sampleVi: "Trong tương lai, tôi muốn học bơi và nấu các món ăn quốc tế. Những kỹ năng này rất hữu ích cho cuộc sống hàng ngày.", 
+                        structure: "I want to learn how to [skill 1] and [skill 2] because...", 
+                        vocab: [{en: "International dishes", vi: "Món ăn quốc tế"}, {en: "Useful for daily life", vi: "Hữu ích cho đời sống"}] 
+                    },
+                    { 
+                        q: "Can you cook any dishes?", 
+                        trans: "Bạn có biết nấu món ăn nào không?", 
+                        sampleEn: "Yes, I can cook simple dishes like fried rice and boiled eggs. My family says my fried rice tastes really good.", 
+                        sampleVi: "Có, tôi có thể nấu các món đơn giản như cơm chiên và trứng luộc. Gia đình tôi nói cơm chiên của tôi có vị rất ngon.", 
+                        structure: "Yes, I can cook simple dishes like [food 1] and [food 2]...", 
+                        vocab: [{en: "Simple dishes", vi: "Món ăn đơn giản"}, {en: "Boiled eggs", vi: "Trứng luộc"}] 
+                    },
+                    { 
+                        q: "What do you do well?", 
+                        trans: "Bạn làm tốt điều gì?", 
+                        sampleEn: "I am good at drawing pictures and decorating rooms. I love making cute handmade cards for my friends.", 
+                        sampleVi: "Tôi giỏi vẽ tranh và trang trí phòng. Tôi thích làm những tấm thiệp thủ công đáng yêu cho bạn bè.", 
+                        structure: "I am good at [skill/action]. I love making...", 
+                        vocab: [{en: "Good at drawing", vi: "Giỏi vẽ tranh"}, {en: "Handmade cards", vi: "Thiệp làm bằng tay"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Past events",
+                questions: [
+                    { 
+                        q: "What did you do last weekend?", 
+                        trans: "Cuối tuần trước bạn đã làm gì?", 
+                        sampleEn: "Last weekend, I visited my grandparents in the countryside. We cooked a big dinner and had a lot of fun together.", 
+                        sampleVi: "Cuối tuần trước, tôi đến thăm ông bà ở quê. Chúng tôi đã nấu một bữa tối lớn và có rất nhiều niềm vui cùng nhau.", 
+                        structure: "Last weekend, I + [V2/ed]. We cooked... and had...", 
+                        vocab: [{en: "In the countryside", vi: "Ở nông thôn/quê"}, {en: "Have fun together", vi: "Vui vẻ cùng nhau"}] 
+                    },
+                    { 
+                        q: "Who did you spend time with yesterday?", 
+                        trans: "Bạn đã dành thời gian với ai ngày hôm qua?", 
+                        sampleEn: "I spent most of my time yesterday with my sister. We watched a comedy movie and did our homework together.", 
+                        sampleVi: "Tôi đã dành phần lớn thời gian ngày hôm qua cùng chị gái. Chúng tôi đã xem một bộ phim hài và cùng nhau làm bài tập.", 
+                        structure: "I spent time with [person] yesterday. We watched... and...", 
+                        vocab: [{en: "Comedy movie", vi: "Phim hài"}, {en: "Do homework together", vi: "Cùng nhau làm bài tập"}] 
+                    },
+                    { 
+                        q: "Did you enjoy your last holiday? Why?", 
+                        trans: "Bạn có thích kỳ nghỉ vừa rồi không? Tại sao?", 
+                        sampleEn: "Yes, I enjoyed it very much because I went to the beach. The seafood was delicious and the weather was warm.", 
+                        sampleVi: "Có, tôi rất thích kỳ nghỉ đó vì tôi đã đi biển. Hải sản rất ngon và thời tiết ấm áp.", 
+                        structure: "Yes, I enjoyed it because I went to [place]. The food was...", 
+                        vocab: [{en: "Went to the beach", vi: "Đã đi ra biển"}, {en: "Seafood was delicious", vi: "Hải sản rất ngon"}] 
+                    },
+                    { 
+                        q: "What did you do yesterday?", 
+                        trans: "Bạn đã làm gì vào ngày hôm qua?", 
+                        sampleEn: "Yesterday, I stayed at home to study English in the morning. In the afternoon, I helped my mother clean the house.", 
+                        sampleVi: "Hôm qua, tôi ở nhà học tiếng Anh vào buổi sáng. Vào buổi chiều, tôi giúp mẹ dọn dẹp nhà cửa.", 
+                        structure: "Yesterday, I stayed at home to [verb]... In the afternoon, I...", 
+                        vocab: [{en: "Stayed at home", vi: "Đã ở nhà"}, {en: "Helped my mother", vi: "Đã giúp đỡ mẹ"}] 
+                    },
+                    { 
+                        q: "Where did you go on your last holiday?", 
+                        trans: "Bạn đã đi đâu vào kỳ nghỉ gần đây nhất?", 
+                        sampleEn: "On my last holiday, I went to Da Lat city with my family. We saw many colorful flowers and enjoyed beautiful mountain views.", 
+                        sampleVi: "Vào kỳ nghỉ vừa rồi, tôi đã đi thành phố Đà Lạt cùng gia đình. Chúng tôi đã ngắm nhiều loài hoa rực rỡ và ngắm cảnh núi đẹp.", 
+                        structure: "On my last holiday, I went to [City]. We saw... and...", 
+                        vocab: [{en: "Colorful flowers", vi: "Những bông hoa rực rỡ"}, {en: "Mountain views", vi: "Cảnh quan đồi núi"}] 
+                    }
+                ]
+            },
+            {
+                topic: "Future plans",
+                questions: [
+                    { 
+                        q: "What are you going to do this weekend?", 
+                        trans: "Bạn dự định làm gì cuối tuần này?", 
+                        sampleEn: "This weekend, I am going to go camping with my school friends. We plan to cook barbecue and play outdoor games.", 
+                        sampleVi: "Cuối tuần này, tôi dự định đi cắm trại cùng bạn học. Chúng tôi lên kế hoạch nấu thịt nướng và chơi trò chơi ngoài trời.", 
+                        structure: "This weekend, I am going to [action]. We plan to...", 
+                        vocab: [{en: "Go camping", vi: "Đi cắm trại"}, {en: "Cook barbecue", vi: "Nấu thịt nướng"}] 
+                    },
+                    { 
+                        q: "Are you going to travel this year?", 
+                        trans: "Năm nay bạn có dự định đi du lịch không?", 
+                        sampleEn: "Yes, I am going to travel to Phu Quoc Island this summer. I can't wait to swim in the sea and relax on the beach.", 
+                        sampleVi: "Có, tôi định đi du lịch đảo Phú Quốc vào mùa hè này. Tôi rất nôn nóng được bơi ở biển và thư giãn trên bãi cát.", 
+                        structure: "Yes, I am going to travel to [Place] this summer. I want to...", 
+                        vocab: [{en: "Phu Quoc Island", vi: "Đảo Phú Quốc"}, {en: "Relax on the beach", vi: "Thư giãn trên bãi biển"}] 
+                    }
+                ]
+            }
+        ];
+
+        // Active State Tracking
+        let currentTopicIdx = 0;
+        let currentQuestionIdx = 0;
+        let expandedTopicIdx = 0; // State for expanded topic accordion
+        let isRandomTestMode = false;
+        let testQuestionsList = []; // Array for test mode
+
+        let recognition = null;
+        let isRecording = false;
+
+        // Track accumulated speech text so previous sentences aren't overwritten
+        let accumulatedTranscript = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLessonList();
+            loadCurrentQuestion();
+            setupSpeechRecognition();
+        });
+
+        // Render Topics with Collapsible Questions below each Topic
+        function renderLessonList() {
+            const listContainer = document.getElementById('lesson-list');
+            listContainer.innerHTML = '';
+
+            lessonsData.forEach((tData, tIdx) => {
+                const isCurrentActiveTopic = (tIdx === currentTopicIdx && !isRandomTestMode);
+                const isExpanded = (tIdx === expandedTopicIdx);
+
+                // Build question links inside the topic
+                let questionsHtml = tData.questions.map((q, qIdx) => {
+                    const isSelectedQ = isCurrentActiveTopic && (qIdx === currentQuestionIdx);
+                    return `
+                        <button onclick="selectSpecificQuestion(${tIdx}, ${qIdx})" class="w-full text-left px-3 py-1.5 rounded-lg text-xs transition flex items-center justify-between ${isSelectedQ ? 'bg-indigo-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100'}">
+                            <span class="truncate pr-1">${qIdx + 1}. ${q.q}</span>
+                            <i class="fa-solid fa-play text-[9px] opacity-60"></i>
+                        </button>
+                    `;
+                }).join('');
+
+                const topicCardHtml = `
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                        <!-- Topic Button Header -->
+                        <div onclick="toggleTopicAccordion(${tIdx})" class="p-3 ${isCurrentActiveTopic ? 'bg-indigo-50/80 border-b border-indigo-100' : 'bg-slate-50 border-b border-slate-100'} flex justify-between items-center cursor-pointer hover:bg-indigo-50/50 transition">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-folder text-indigo-500 text-xs"></i>
+                                <h3 class="font-bold text-xs ${isCurrentActiveTopic ? 'text-indigo-900' : 'text-slate-800'}">${tData.topic}</h3>
+                            </div>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[10px] bg-slate-200/70 text-slate-600 font-bold px-1.5 py-0.5 rounded-full">${tData.questions.length} câu</span>
+                                <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}"></i>
+                            </div>
+                        </div>
+
+                        <!-- Questions dropdown container -->
+                        <div class="${isExpanded ? 'block' : 'hidden'} p-1.5 space-y-1 bg-white border-t border-slate-100">
+                            ${questionsHtml}
+                        </div>
+                    </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', topicCardHtml);
+            });
+        }
+
+        function toggleTopicAccordion(topicIndex) {
+            expandedTopicIdx = (expandedTopicIdx === topicIndex) ? -1 : topicIndex;
+            renderLessonList();
+        }
+
+        function selectSpecificQuestion(topicIndex, questionIndex) {
+            isRandomTestMode = false;
+            currentTopicIdx = topicIndex;
+            currentQuestionIdx = questionIndex;
+            expandedTopicIdx = topicIndex;
+            renderLessonList();
+            loadCurrentQuestion();
+        }
+
+        // Toggle question translation visibility
+        function toggleTranslation() {
+            const transEl = document.getElementById('question-translation');
+            const btnText = document.getElementById('btn-trans-text');
+            if (transEl.classList.contains('hidden')) {
+                transEl.classList.remove('hidden');
+                btnText.innerText = 'Ẩn dịch tiếng Việt';
+            } else {
+                transEl.classList.add('hidden');
+                btnText.innerText = 'Xem dịch câu hỏi';
+            }
+        }
+
+        // Load Active Question
+        function loadCurrentQuestion() {
+            let qData, lessonBadgeText, topicTitleText, totalQInTopic;
+
+            // Reset recording accumulator on question change
+            accumulatedTranscript = '';
+
+            if (isRandomTestMode) {
+                qData = testQuestionsList[currentQuestionIdx];
+                lessonBadgeText = `ĐỀ THI NGẪU NHIÊN`;
+                topicTitleText = qData.topicName;
+                totalQInTopic = testQuestionsList.length;
+            } else {
+                const tData = lessonsData[currentTopicIdx];
+                qData = tData.questions[currentQuestionIdx];
+
+                lessonBadgeText = `TOPIC`;
+                topicTitleText = tData.topic;
+                totalQInTopic = tData.questions.length;
+            }
+
+            document.getElementById('current-lesson-badge').innerText = lessonBadgeText;
+            document.getElementById('current-topic-title').innerText = topicTitleText;
+            document.getElementById('question-counter').innerText = `Câu ${currentQuestionIdx + 1} / ${totalQInTopic}`;
+
+            document.getElementById('question-text').innerText = qData.q;
+            
+            // Set translation and keep hidden initially
+            const transEl = document.getElementById('question-translation');
+            transEl.innerText = qData.trans;
+            transEl.classList.add('hidden');
+            document.getElementById('btn-trans-text').innerText = 'Xem dịch câu hỏi';
+
+            // Reset UI States
+            document.getElementById('user-answer').value = '';
+            document.getElementById('ai-feedback-box').classList.add('hidden');
+            document.getElementById('vocab-box').classList.add('hidden');
+            document.getElementById('sample-box').classList.add('hidden');
+
+            // Render Structure & Vocabulary Hints
+            const vocabBox = document.getElementById('vocab-box');
+            let vocabListHtml = qData.vocab.map(v => `
+                <div class="flex justify-between items-center text-slate-700">
+                    <span class="font-semibold text-indigo-900">• ${v.en}</span>
+                    <span class="text-slate-500">${v.vi}</span>
+                </div>
+            `).join('');
+
+            vocabBox.innerHTML = `
+                <div class="mb-2.5 pb-2 border-b border-slate-200">
+                    <span class="block text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1"><i class="fa-solid fa-shapes"></i> Mẫu cấu trúc trả lời:</span>
+                    <p class="font-medium text-indigo-900 bg-white p-2 rounded-lg border border-slate-200 font-mono text-xs">${qData.structure || 'Trả lời ngắn gọn từ 2-3 câu.'}</p>
+                </div>
+                <div>
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-solid fa-spell-check"></i> Từ vựng gợi ý:</span>
+                    <div class="space-y-1">${vocabListHtml}</div>
+                </div>
+            `;
+
+            document.getElementById('sample-answer-text').innerText = `"${qData.sampleEn}"`;
+            document.getElementById('sample-answer-trans').innerText = `"${qData.sampleVi}"`;
+
+            // Buttons state
+            document.getElementById('btn-prev').disabled = (currentQuestionIdx === 0);
+            document.getElementById('btn-next').disabled = (currentQuestionIdx === totalQInTopic - 1);
+        }
+
+        function nextQuestion() {
+            const maxQ = isRandomTestMode 
+                ? testQuestionsList.length 
+                : lessonsData[currentTopicIdx].questions.length;
+
+            if (currentQuestionIdx < maxQ - 1) {
+                currentQuestionIdx++;
+                loadCurrentQuestion();
+                renderLessonList();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                loadCurrentQuestion();
+                renderLessonList();
+            }
+        }
+
+        // Random Test Mode Builder (Select 3 topics randomly)
+        function startRandomTest() {
+            const shuffledTopics = [...lessonsData].sort(() => 0.5 - Math.random());
+            const selected3Topics = shuffledTopics.slice(0, 3);
+
+            testQuestionsList = [];
+
+            selected3Topics.forEach(t => {
+                t.questions.forEach(q => {
+                    testQuestionsList.push({
+                        ...q,
+                        topicName: t.topic
+                    });
+                });
+            });
+
+            isRandomTestMode = true;
+            currentQuestionIdx = 0;
+            renderLessonList();
+            loadCurrentQuestion();
+
+            alert(`Đã tạo Đề thi Ngẫu nhiên với 3 Chủ đề ngẫu nhiên (${testQuestionsList.length} câu hỏi)! Bắt đầu thực hành ngay!`);
+        }
+
+        function toggleVocab() {
+            document.getElementById('vocab-box').classList.toggle('hidden');
+        }
+
+        function toggleSampleAnswer() {
+            document.getElementById('sample-box').classList.toggle('hidden');
+        }
+
+        // Speech Recognition Setup
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.lang = 'en-US';
+                recognition.interimResults = true;
+
+                recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalChunk = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalChunk += event.results[i][0].transcript + ' ';
+                        } else {
+                            interimTranscript += event.results[i][0].transcript;
+                        }
+                    }
+
+                    if (finalChunk) {
+                        accumulatedTranscript += finalChunk;
+                    }
+
+                    // Display full combined transcript without losing previous sentences
+                    const currentText = (accumulatedTranscript + interimTranscript).trim();
+                    document.getElementById('user-answer').value = currentText;
+                };
+
+                recognition.onerror = (event) => {
+                    console.warn("Speech recognition error:", event.error);
+                    if (event.error !== 'no-speech') {
+                        stopRecording();
+                    }
+                };
+
+                recognition.onend = () => {
+                    // Auto-restart if user hasn't manually clicked 'Stop' to prevent cut-offs on long pauses
+                    if (isRecording) {
+                        try {
+                            recognition.start();
+                        } catch(e) {
+                            stopRecording();
+                        }
+                    }
+                };
+            }
+        }
+
+        function toggleRecording() {
+            if (!recognition) {
+                alert("Trình duyệt không hỗ trợ ghi âm trực tiếp. Bạn hãy gõ câu trả lời vào ô thoại nhé!");
+                return;
+            }
+
+            if (!isRecording) {
+                try {
+                    // Keep existing text if user wants to speak more
+                    accumulatedTranscript = document.getElementById('user-answer').value;
+                    if (accumulatedTranscript && !accumulatedTranscript.endsWith(' ')) {
+                        accumulatedTranscript += ' ';
+                    }
+
+                    recognition.start();
+                    isRecording = true;
+                    document.getElementById('record-btn-text').innerText = "Dừng nói";
+                    document.getElementById('btn-record').classList.replace('bg-rose-500', 'bg-slate-700');
+                    document.getElementById('recording-status').classList.remove('hidden');
+                } catch(e) {
+                    console.error(e);
+                }
+            } else {
+                stopRecording();
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            if (recognition) {
+                recognition.stop();
+            }
+            document.getElementById('record-btn-text').innerText = "Bắt đầu nói";
+            document.getElementById('btn-record').classList.replace('bg-slate-700', 'bg-rose-500');
+            document.getElementById('recording-status').classList.add('hidden');
+        }
+
+        // Text To Speech using Gemini API
+        async function playQuestionTTS() {
+            const btn = document.getElementById('btn-play-audio');
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
+
+            const questionText = document.getElementById('question-text').innerText;
+
+            try {
+                const apiKey = ""; // Runtime automatically injected by Canvas
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{
+                        parts: [{ text: `Ask this IELTS Speaking Part 1 question at a natural, conversational examiner pace: ${questionText}` }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: "Aoede" }
+                            }
+                        }
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                    
+                    const pcm16 = new Int16Array(base64ToArrayBuffer(audioData));
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                } else {
+                    fallbackTTS(questionText);
+                }
+            } catch (e) {
+                fallbackTTS(questionText);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+
+        function fallbackTTS(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 1.0; // Natural examiner pace
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buffer);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+
+            for (let i = 0; i < pcm16.length; i++) {
+                view.setInt16(44 + i * 2, pcm16[i], true);
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // AI Feedback evaluation
+        async function getAIFeedback() {
+            const userAnswer = document.getElementById('user-answer').value.trim();
+            const feedbackBox = document.getElementById('ai-feedback-box');
+            const feedbackContent = document.getElementById('ai-feedback-content');
+            const btn = document.getElementById('btn-feedback');
+
+            if (!userAnswer) {
+                alert("Bạn vui lòng nhập hoặc nói câu trả lời trước khi xem nhận xét nhé!");
+                return;
+            }
+
+            feedbackBox.classList.remove('hidden');
+            feedbackContent.innerHTML = `<p class="flex items-center gap-2 text-indigo-600"><i class="fa-solid fa-spinner fa-spin"></i> Giáo viên AI đang phân tích câu trả lời của bạn...</p>`;
+            btn.disabled = true;
+
+            const qText = document.getElementById('question-text').innerText;
+
+            const systemPrompt = `Bạn là giáo viên dạy IELTS Speaking kinh nghiệm cho người mới bắt đầu (Trình độ A1-A2). 
+            Hãy nhận xét câu trả lời ngắn gọn, nhẹ nhàng, truyền cảm hứng bằng tiếng Việt. Khuyến khích học viên mở rộng câu trả lời từ 2 đến 3 câu.
+            Cấu trúc phản hồi:
+            1. Điểm khen (1 câu ngắn)
+            2. Lỗi ngữ pháp / từ vựng hoặc cách mở rộng ý hay hơn (nếu có)
+            3. Câu trả lời gợi ý 2-3 câu hoàn chỉnh cho trình độ A1-A2.`;
+
+            const userPrompt = `
+            Câu hỏi: "${qText}"
+            Học viên trả lời: "${userAnswer}"
+            Hãy giúp học viên kiểm tra và đưa ra lời khuyên phù hợp nhất!
+            `;
+
+            try {
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userPrompt }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const aiText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (aiText) {
+                    let formatted = aiText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    formatted = formatted.replace(/\n/g, '<br/>');
+                    feedbackContent.innerHTML = `<div class="bg-white p-3 rounded-lg border border-indigo-100 text-slate-700">${formatted}</div>`;
+                } else {
+                    feedbackContent.innerHTML = `<p class="text-rose-600">Chưa nhận được phản hồi từ AI. Hãy thử lại nhé!</p>`;
+                }
+            } catch (e) {
+                feedbackContent.innerHTML = `<p class="text-rose-600">Đã có lỗi xảy ra. Kiểm tra kết nối mạng của bạn.</p>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
